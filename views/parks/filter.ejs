@@ -1,0 +1,293 @@
+<% layout('layouts/boilerplate') %>
+<title>National Parks Finder: Search results</title>
+
+<h1 class="mb-3 mt-4">Search results</h1>
+
+<div class="row mb-3">
+    <div class="col-lg-3 col-md-4">
+        <div class="card search-container">
+            <div class="card-body">
+                <h5 class="card-title fw-bold"><%= totalMatches %> <%= (totalMatches > 1) ? 'parks' : 'park' %> matching:</h5>
+                <div class="search-results mb-3">
+                    <span class="badge rounded-pill bg-secondary" <%= search ? '' : 'hidden' %> >
+                        <%= search %>  
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=&country=<%= country %>&region=<%= region %>&activity=<%= activity %>&rating=<%= rating %>&top=<%= top %>&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %>  
+                    </span>
+
+                    <span class="badge rounded-pill bg-secondary" <%= country ? '' : 'hidden' %> >
+                        <%= country === 'canada' ? 'Canada' : 'United States' %> 
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=&region=<%= region %>&activity=<%= activity %>&rating=<%= rating %>&top=<%= top %>&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %>  
+                    </span>
+
+                    <span class="badge rounded-pill bg-secondary" <%= region ? '' : 'hidden' %> >
+                        <%= region.charAt(0).toUpperCase() + region.slice(1) %> 
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=&activity=<%= activity %>&rating=<%= rating %>&top=<%= top %>&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %>  
+                    </span>
+                    
+                    <span class="badge rounded-pill bg-secondary" <%= activity ? '' : 'hidden' %> >
+                        <%= activity.charAt(0).toUpperCase() + activity.slice(1) %> 
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=<%= region %>&activity=&rating=<%= rating %>&top=<%= top %>&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %> 
+                    </span>
+                    
+                    <span class="badge rounded-pill bg-secondary" <%= rating ? '' : 'hidden' %> >
+                        <%= rating %> stars
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=<%= region %>&activity=<%= activity %>&rating=&top=<%= top %>&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %> 
+                    </span>
+
+                    <span class="badge rounded-pill bg-secondary" <%= top ? '' : 'hidden' %> >
+                        Top Rated
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=<%= region %>&activity=<%= activity %>&rating=<%= rating %>&top=&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %> 
+                    </span>
+
+                    <!-- <span class="badge rounded-pill bg-secondary" <%= rating ? '' : 'hidden' %> >
+                        <%= rating === 'top' ? 'Top Rated' : rating.charAt(0).toUpperCase() + rating.slice(1) %> 
+                        <% if (count === 1) { %> 
+                            <a href="/parks?page=1" class="search-field-close">&#x2715;</a>
+                        <% } else { %>
+                            <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=<%= region %>&activity=<%= activity %>&rating=&page=1" class="search-field-close">&#x2715;</a>
+                        <% } %> 
+                    </span> -->
+                </div>
+                
+        
+                <form action="/parks/filter" method="get">
+                    <div class="row mb-3">
+                        <div class="mb-3">
+                            <label for="search" class="form-label fw-bold">Park Name</label>
+                            <!-- <input type="text" class="form-control col-3" id="search" placeholder="Search park name"
+                                name="filter[search]" value="<%= search %>"> -->
+                            <input type="text" class="form-control col-3" id="search" placeholder="Search park name"
+                                name="search" value="<%= search %>">
+                        </div>
+            
+                        <div class="mb-3">
+                            <label for="country" class="form-label fw-bold">Country</label>
+                            <!-- <select class="form-select" name="filter[country]" id="country"> -->
+                            <select class="form-select" name="country" id="country">
+                                <option value="">Filter by country</option>
+                                <option value="canada">Canada</option>
+                                <option value="united-states">United States</option>
+                            </select>
+                        </div>
+            
+                        <div class="mb-3">
+                            <label for="region" class="form-label fw-bold">Region</label>
+                            <!-- <select class="form-select" name="filter[region]" id="region"> -->
+                            <select class="form-select" name="region" id="region">
+                                <option value="">Filter by region</option>
+                                <option value="west">West</option>
+                                <option value="central">Central</option>
+                                <option value="east">East</option>
+                            </select>
+                        </div>
+            
+                        <div class="mb-3">
+                            <label for="activity" class="form-label fw-bold">Activity</label>
+                            <!-- <select class="form-select" name="filter[activity]" id="activity"> -->
+                            <select class="form-select" name="activity" id="activity">
+                                <option value="">Filter by activity</option>
+                                <option value="biking">Biking</option>
+                                <option value="birding">Birding</option>
+                                <option value="boating">Boating</option>
+                                <option value="camping">Camping</option>
+                                <option value="climbing">Climbing</option>
+                                <option value="cross country">Cross Country</option>
+                                <option value="fishing">Fishing</option>
+                                <option value="flying">Flying</option>
+                                <option value="golfing">Golfing</option>
+                                <option value="hiking">Hiking</option>
+                                <option value="horseback riding">Horseback Riding</option>
+                                <option value="hunting">Hunting</option>
+                                <option value="kayaking">Kayaking</option>
+                                <option value="museum">Museum</option>
+                                <option value="picnicking">Picnicking</option>
+                                <option value="scuba diving">Scuba Diving</option>
+                                <option value="skating">Skating</option>
+                                <option value="skiing">Skiing</option>
+                                <option value="snowshoeing">Snowshoeing</option>
+                                <option value="swimming">Swimming</option>
+                                <option value="tennis">Tennis</option>
+                                <option value="theatre">Theatre</option>
+                                <option value="tobagganing">Tobagganing</option>
+                                <option value="tour">Tour</option>
+                                <option value="tours">Tours</option>
+                                <option value="whale watching">Whale Watching</option>
+                                <option value="wildlife watching">Wildlife Watching</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rating" class="form-label fw-bold">Rating</label>
+                            <select class="form-select" name="rating" id="rating">
+                                <option value="" selected>Filter by minimum rating</option>
+                                <option value="4.5">4.5 stars</option>
+                                <option value="4">4 stars</option>
+                                <option value="3.5">3.5 stars</option>
+                                <option value="3">3 stars</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <label class="form-check-label" for="top-rated-check">
+                                    Only show 
+                                    <strong>Top Rated </strong>
+                                    <span>
+                                        <div class="top-rated-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                            </svg>
+                                            <span class="top-rated-info-text">Parks with the highest ratings across the largest number of reviews.</span>
+                                        </div>	
+                                    </span>
+                                </label>
+                                <input class="form-check-input" type="checkbox" id="top-rated-check" name="top" value="on" <%= top ? 'checked' : '' %>>
+                                <input type="hidden" name="top" value="">
+                            </div>
+                        </div>
+                
+                        <div class="mb-3">
+                            <div class="gap-2 d-md-flex">
+                                <a class="btn btn-light clear-button" href="/parks?page=1">Clear</a>
+                                <button name="page" value="1" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>    
+        </div>
+    </div>
+
+
+    <div class="col-lg-9 col-md-8">
+        <hr class="top-line">
+        <% for (let park of parks) { %>
+            <div class="card main-park-card mb-3">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <a href="/parks/<%= park._id %>">
+							<img src="<%= park.images[0].url %>" alt="" class="main-image">
+						</a>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card-body">
+                            <h5 class="card-title ml-2">
+                                <a href="/parks/<%= park._id %>" class="card-title-link"><%= park.title %></a>
+                                <% if (park.rating === 'Top Rated') { %>
+                                    <span class="badge rounded-pill bg-warning align-top ml-auto">&#10026; Top Rated</span>
+                                <% } else if (park.rating === 'Good') { %>
+                                    <span class="badge rounded-pill bg-success align-top ml-auto">Good</span>
+                                <% } %>
+                            </h5>
+                            <p class="card-text"> 
+                                <span class="filled-star">&#11089;</span>
+                                <strong><%= park.averageRating %></strong> (<%= park.reviewCount.toLocaleString() %> reviews)
+                            </p>
+                            <p class="card-text main-description"><%= park.description %></p>
+                            <p class="card-text">
+                                <% for (let [index, activity] of park.activities.entries()) { %>
+									<% if (index === 7) { %> 
+										<span class="badge rounded-pill main-activity-pill-home">+ <%= park.activities.length - 7 %> <%= park.activities.length - 7 === 1 ? 'other' : 'others' %></span>
+										<% break %> 
+									<% } %> 
+									<span class="badge rounded-pill main-activity-pill-preview">
+                                        <a href="/parks/filter?search=<%= search %>&country=<%= country %>&region=<%= region %>&activity=<%= activity %>&rating=<%= rating %>&top=<%= top %>&page=1" class="activity-preview"><%= activity %></a>
+                                    </span>		
+								<% } %> 
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted"><%= park.location %>, <%= park.country %> - <%= park.region %></small>
+                            </p>
+                            <a class="btn btn-primary" href="/parks/<%= park._id %>">Explore <%= park.title %></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        <% } %>
+    </div>
+</div>
+
+<% if (page.totalPages > 1) { %> 
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <%= (page.previous) ? '' : 'disabled' %>"><a class="page-link first-page" href="/parks/filter?<%= page.queryString %>1"><i class="fa fa-angle-double-left paginate-arrow"></i></a></li>
+            <li class="page-item <%= (page.previous) ? '' : 'disabled' %>"><a class="page-link" href="/parks/filter?<%= page.queryString + page.previous %>"><i class="fa fa-angle-left paginate-arrow"></i></a></li> 
+
+            <% page.display.forEach((pageNumber, i) => { %>
+                <li class="page-item <%= (page.displayActiveIndex === i) ? 'active' : '' %> "><a class="page-link" href="/parks/filter?<%= page.queryString + pageNumber %>"><%= pageNumber %> </a></li>
+            <% }) %>  
+
+            <li class="page-item <%= (page.next) ? '' : 'disabled' %>"><a class="page-link" href="/parks/filter?<%= page.queryString + page.next %>"><i class="fa fa-angle-right paginate-arrow"></i></a></li> 
+            <li class="page-item <%= (page.next) ? '' : 'disabled' %>"><a class="page-link last-page" href="/parks/filter?<%= page.queryString + page.totalPages%>"><i class="fa fa-angle-double-right paginate-arrow"></i></a></li> 
+        </ul>
+    </nav>
+<% } %> 
+
+<script>
+    const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+    const parks = { features: <%- JSON.stringify(parks) %>}
+</script>
+
+<script>
+    let countrySelect = document.getElementById('country')
+    
+    for (var i, j = 0; i = countrySelect.options[j]; j++) {
+        if (i.value === '<%= country %>' ) {
+            countrySelect.selectedIndex = j;
+            break;
+        }
+    }
+
+    let regionSelect = document.getElementById('region')
+    
+    for (var i, j = 0; i = regionSelect.options[j]; j++) {
+        if (i.value === '<%= region %>' ) {
+            regionSelect.selectedIndex = j;
+            break;
+        }
+    }
+
+    let activitySelect = document.getElementById('activity')
+    
+    for (var i, j = 0; i = activitySelect.options[j]; j++) {
+        if (i.value === '<%= activity %>' ) {
+            activitySelect.selectedIndex = j;
+            break;
+        }
+    }
+
+    let ratingSelect = document.getElementById('rating')
+    
+    for (var i, j = 0; i = ratingSelect.options[j]; j++) {
+        if (i.value === '<%= rating %>' ) {
+            ratingSelect.selectedIndex = j;
+            break;
+        }
+    }
+</script>

@@ -1,0 +1,30 @@
+<% layout('layouts/boilerplate') %>
+<title>Map</title>
+<div id="full-map" class="map-container">
+    <div class="geocoder" id="geocoder"></div>
+</div>
+<div id="legend">
+    <div><span class="legend-icon"></span>Top Rated</div>
+</div>
+
+<script>
+    const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+    const parks = {features: <%- JSON.stringify(parks) %>}
+    console.log(parks)
+</script>
+
+<script src="/javascript/fullMap.js"></script>
+
+<script>
+    const mapClickArea = document.getElementById('full-map')
+    mapClickArea.addEventListener('click', function(event) {
+        document.getElementById("navbar").style.top = "-42px"
+        document.getElementById("full-map").style.top = "34px"
+    })
+</script>
+
+<script>
+	const navMap = document.getElementById('nav-map')
+	navMap.classList.add('navbar-link-active')
+</script>
+

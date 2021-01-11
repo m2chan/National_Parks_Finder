@@ -1,0 +1,391 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css"/>
+
+<title><%= park.title %></title>
+
+<div class="mb-3">
+	<button class="back-button" onclick="history.back(-1)"><i class="fa fa-angle-left back-arrow"></i>Back</button>
+</div>
+	
+<h1>Explore <%= park.title.substr(-1) === 's' ? 'the' : '' %> <%= park.title %></h1>
+
+<p class="text-muted fs-6"> <%= park.location %>, <%= park.country %></p>
+
+<div class="carousel-container mb-4">
+	<div class="carousel" data-flickity='{ "wrapAround": true, "fade": true, "pageDots": false}'>
+		<% park.images.forEach((image, i) => { %> 
+			<div class="carousel-cell">
+				<img src="<%= image.url %>" class="show-image" id="image-<%= i %>">
+				<div class="image-count badge rounded-pill bg-light"><%= i + 1 %> / <%= park.images.length %></div>
+			</div>
+		<% }) %> 
+	</div>
+	
+	<!-- Button trigger modal -->
+	<div class="mb-3 show-images">
+		<button type="button" class="btn btn-light show-images-button" data-bs-toggle="modal" data-bs-target="#show-photos">
+			Show all photos
+		</button>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="show-photos" tabindex="-1" aria-labelledby="show-all-images" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="show-all-images">Photos of <%= park.title.substr(-1) === 's' ? 'the' : '' %> <%= park.title %> (<%= park.images.length %>)</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="image-modal-body">
+			<% for (let image of park.images) { %>
+				<div class="mb-3">
+					<img src="<%= image.url %>" class="modal-image" alt="">
+				</div>
+			<% } %>  
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+<div class="row mb-4 info-section">
+	<div class="col-lg-7">
+		<section class="py-2 mb-2">
+			<h2 class="fs-3">About</h2>
+			<hr>
+				<p class="text-muted">Designated as a National Park in <%= park.established %></p>
+				<p class="card-text fs-6"><%= park.description %></p>
+		</section>
+		
+		<section class="py-2 mb-2">
+			<h2 class="fs-3">Activities</h2>
+			<hr>
+			<div class="activities">
+				<span>
+					<% for (let activity of park.capitalizeActivities) { %> 
+						<div class="badge rounded-pill mx-1 main-activity-pill-show mb-2"><%= activity %> </div>
+					<% } %> 
+				</span>
+			</div>
+		</section>
+		
+		<section class="py-2 mb-2">
+			<h2 class="fs-3">Weather</h2>
+			<hr>
+			<div class="row mb-3">
+				<div class="temperature-units-container mb-2">
+					<a id="convert-units"><span>Show in </span><span class="unit-toggle">F</span><span>&deg;</span></a>
+				</div>
+				<div class="col-sm-4">
+					<div class="card weather-card">
+						<div class="card-body">
+							<h5 class="card-title weather-card-title">Today</h5>
+							<span class="text-muted date"><%= weatherForecast[0].fullDate %></span>
+							<hr class="mt-0">
+							<div class="row">
+								<div class="col-md-6">
+									<img src="https://res.cloudinary.com/dsykt6xxf/image/upload/v1609872089/NationalParks/Icons/<%= weatherForecast[0].icon %>.png" class="weather-icon" alt="<%= weatherForecast[0].main %>"/>
+								</div>
+								<div class="col-md-6">
+									<div class="large-temp mt-1">
+										<span class="fs-2 overall-temp-convert"><%= weatherForecast[0].temp[0] %></span><span class="fs-2">&deg;</span><span class="fs-4 degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>L: </span><span class="min-temp-convert"><%= weatherForecast[0].tempMin[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>H: </span><span class="max-temp-convert"><%= weatherForecast[0].tempMax[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+								</div>
+							</div>
+							<div class="mt-2">
+								<span><%= weatherForecast[0].description %></span> <br>
+								<span>Feels like: </span><span class="feels-like-convert"><%= weatherForecast[0].feelsLike[0] %></span><span>&deg;</span><span class="degree">C</span> <br>
+								<span>POP: <%= weatherForecast[0].pop %>%</span> <br>
+								<span>Humidity: <%= weatherForecast[0].humidity %>%</span> <br>
+								<span>Wind: </span><span class="wind-speed-convert"><%= weatherForecast[0].windSpeed[0] %></span><span class="wind-speed-unit"> kph </span><span><%= weatherForecast[0].windDirection %></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="card weather-card">
+						<div class="card-body">
+							<h5 class="card-title weather-card-title">Tomorrow</h5>
+							<span class="text-muted date"><%= weatherForecast[1].fullDate %></span>
+							<hr class="mt-0">
+							<div class="row">
+								<div class="col-md-6">
+									<img src="https://res.cloudinary.com/dsykt6xxf/image/upload/v1609872089/NationalParks/Icons/<%= weatherForecast[1].icon %>.png" class="weather-icon" alt="<%= weatherForecast[1].main %>"/>
+								</div>
+								<div class="col-md-6">
+									<div class="large-temp mt-1">
+										<span class="fs-2 overall-temp-convert"><%= weatherForecast[1].temp[0] %></span><span class="fs-2">&deg;</span><span class="fs-4 degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>L: </span><span class="min-temp-convert"><%= weatherForecast[1].tempMin[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>H: </span><span class="max-temp-convert"><%= weatherForecast[1].tempMax[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+								</div>
+							</div>
+							<div class="mt-2">
+								<span><%= weatherForecast[1].description %></span> <br>
+								<span>Feels like: </span><span class="feels-like-convert"><%= weatherForecast[1].feelsLike[0] %></span><span>&deg;</span><span class="degree">C</span> <br>
+								<span>POP: <%= weatherForecast[1].pop %>%</span> <br>
+								<span>Humidity: <%= weatherForecast[1].humidity %>%</span> <br>
+								<span>Wind: </span><span class="wind-speed-convert"><%= weatherForecast[1].windSpeed[0] %></span><span class="wind-speed-unit"> kph </span><span><%= weatherForecast[1].windDirection %></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="card weather-card">
+						<div class="card-body">
+							<h5 class="card-title weather-card-title"><%= weatherForecast[2].day %></h5>
+							<span class="text-muted date"><%= weatherForecast[2].fullDate %></span>
+							<hr class="mt-0">
+							<div class="row">
+								<div class="col-md-6">
+									<img src="https://res.cloudinary.com/dsykt6xxf/image/upload/v1609872089/NationalParks/Icons/<%= weatherForecast[2].icon %>.png" class="weather-icon" alt="<%= weatherForecast[2].main %>"/>
+								</div>
+								<div class="col-md-6">
+									<div class="large-temp mt-1">
+										<span class="fs-2 overall-temp-convert"><%= weatherForecast[2].temp[0] %></span><span class="fs-2">&deg;</span><span class="fs-4 degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>L: </span><span class="min-temp-convert"><%= weatherForecast[2].tempMin[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+									<div class="temp-range text-muted">
+										<span>H: </span><span class="max-temp-convert"><%= weatherForecast[2].tempMax[0] %></span><span>&deg;</span><span class="degree">C</span>
+									</div>
+								</div>
+							</div>
+							<div class="mt-2">
+								<span><%= weatherForecast[2].description %></span> <br>
+								<span>Feels like: </span><span class="feels-like-convert"><%= weatherForecast[2].feelsLike[0] %></span><span>&deg;</span><span class="degree">C</span> <br>
+								<span>POP: <%= weatherForecast[2].pop %>%</span> <br>
+								<span>Humidity: <%= weatherForecast[2].humidity %>%</span> <br>
+								<span>Wind: </span><span class="wind-speed-convert"><%= weatherForecast[2].windSpeed[0] %></span><span class="wind-speed-unit"> kph </span><span><%= weatherForecast[2].windDirection %></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="source-container text-muted">
+				Weather data from: <a href="https://openweathermap.org/" class="text-muted" target="_blank">OpenWeatherMap</a>
+			</div>
+		</section>
+
+		<section class="py-2 mb-2">
+			<h2 class="fs-3">Contact</h2>
+			<hr>
+			<div class="mb-2">
+				<div class="contact-container mb-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill contact-icon" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+				  	</svg> 
+					<span class="information-field">
+						Phone: <%= park.phone %>
+					</span>
+				</div>
+				
+				<div class="contact-container mb-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-open-fill contact-icon" viewBox="0 0 16 16">
+						<path d="M8.941.435a2 2 0 0 0-1.882 0l-6 3.2A2 2 0 0 0 0 5.4v.313l6.709 3.933L8 8.928l1.291.717L16 5.715V5.4a2 2 0 0 0-1.059-1.765l-6-3.2zM16 6.873l-5.693 3.337L16 13.372v-6.5zm-.059 7.611L8 10.072.059 14.484A2 2 0 0 0 2 16h12a2 2 0 0 0 1.941-1.516zM0 13.373l5.693-3.163L0 6.873v6.5z"/>
+				  	</svg> 
+					  <span class="information-field">
+						Email: <a href="mailto:<%= park.email %>" target="_blank"><%= park.email %></a>
+					</span> 
+				</div>
+					
+				<div class="contact-container mb-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right contact-icon" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+						<path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+					  </svg>
+					  <span class="information-field">
+						Additional information: <a href="<%= park.website %>" target="_blank"><%= park.title %> Visitor Center</a>
+					</span>
+					
+				</div>
+			</div>
+		</section>
+		
+	</div>
+	<div class="col-lg-5">
+		<div class="map-container shadow">
+			<div id='map'></div>
+		</div>
+	</div>
+</div>
+<hr>
+
+<div class="row mb-3">
+	<h2 class="fs-3">Reviews</h2>
+	
+	<div class="col-md-4 offset-md-1">
+		<div class="card mb-3 mr-2 review-container">
+			<div class="card-body">
+				<div class="overall-card-rating">
+					<span class="filled-star-large">&#11089;</span> 
+					<span class="overall-rating"><%= park.averageRating %></span>
+				</div>
+				<p class="text-muted overall-count"><%= park.reviewCount.toLocaleString() %> reviews</p>
+				
+				<% if (park.reviews.length > 0) { %>
+					<p class="card-text">
+						Helpful reviews:
+					</p>
+					<% for (let i = (park.reviews.length > 3 ? park.reviews.length : Math.min(park.reviews.length, 3)) - 1; i >= (park.reviews.length > 3 ? park.reviews.length - 3 : 0) ; i--) { %>
+						<figure class="quote">
+							<blockquote class="main-description review-preview">
+								<%= park.reviews[i].body %>
+							</blockquote>
+							<figcaption> 
+								<span class="text-muted">
+									<%= park.reviews[i].author.username %>
+								</span>
+								<span class="review-info">
+									<% for (let j = 0; j < park.reviews[i].rating; j++) { %> 
+										<%- '<span class="filled-star preview-star">&#11089;</span>' %>
+									<% } %>
+									<% for (let j = 0; j < (5 - park.reviews[i].rating); j++) { %> 
+										<%- '<span class="unfilled-star preview-star">&#11089;</span>' %>
+									<% } %>
+								</span>
+							</figcaption>
+						</figure>
+					<% } %> 
+				<% } else { %>  
+					<p class="card-text">
+						No reviews yet!
+					</p>
+				<% } %>
+
+				<div>
+					<form action="/parks/<%= park._id %>/new" method="get">	
+						<button class="btn btn-primary">Submit a review</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6 review-panel">
+		<% for (let [index, review] of park.reviews.reverse().entries()) { %>
+			<% if (index < 10) { %>
+				<div class="card mb-3">
+					<div class="card-body">
+						<h5 class="card-title review-title"><%= review.author.username %></h5>
+						<div class="mb-2">
+							<span class="review-info">
+								<% for (let i = 0; i < review.rating; i++) { %> 
+									<%- '<span class="filled-star">&#11089;</span>' %>
+								<% } %>
+								<% for (let i = 0; i < (5 - review.rating); i++) { %> 
+									<%- '<span class="unfilled-star">&#11089;</span>' %>
+								<% } %>
+							</span>
+							<span class="review-date text-muted">
+								<%= review.monthInText %> <%= review.date.year %>
+							</span>
+						</div>
+						<p class="card-text review-body"><%= review.body %></p>
+
+						<!-- Only show delete button if this is the current user's post -->
+						<% if (currentUser && review.author.equals(currentUser._id)) { %>
+
+						<form action="/parks/<%= park._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+							<button class="btn btn-sm btn-danger">Delete</button>
+						</form>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
+		<% } %>
+
+		<!-- Button trigger modal -->
+		<% if (park.reviews.length > 10) { %> 
+			<div class="mb-3 show-reviews">
+				<button type="button" class="btn btn-light show-reviews-button" data-bs-toggle="modal" data-bs-target="#show-reviews">
+					Show all reviews
+				</button>
+			</div>
+		<% } %> 
+		<div class="source-container text-muted">
+			Review data from: <a href="https://www.google.ca/maps" class="text-muted" target="_blank">Google Maps</a>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="show-reviews" tabindex="-1" aria-labelledby="show-all-reviews" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="show-all-images">All reviews</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<% for (let review of park.reviews.reverse()) { %>
+						<div class="row">
+							<div class="card col-10 offset-1 mb-3">
+								<div class="card-body">
+									<h5 class="card-title review-title"><%= review.author.username %></h5>
+									<div class="mb-2">
+										<span class="review-info">
+											<% for (let i = 0; i < review.rating; i++) { %> 
+												<%- '<span class="filled-star">&#11089;</span>' %>
+											<% } %>
+											<% for (let i = 0; i < (5 - review.rating); i++) { %> 
+												<%- '<span class="unfilled-star">&#11089;</span>' %>
+											<% } %>
+										</span>
+										<span class="review-date text-muted">
+											<%= review.monthInText %> <%= review.date.year %>
+										</span>
+									</div>
+									<p class="card-text"><%= review.body %></p>
+			
+									<!-- Only show delete button if this is the current user's post -->
+									<% if (currentUser && review.author.equals(currentUser._id)) { %>
+										<form action="/parks/<%= park._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+											<button class="btn btn-sm btn-danger">Delete</button>
+										</form>
+									<% } %>
+								</div>
+							</div>
+						</div>
+					<% } %> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+			
+
+
+
+
+<!-- Passes our variables over to the client side Javascript -->
+<script>
+	const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+	const park = <%- JSON.stringify(park) %>
+	const weatherForecast = <%- JSON.stringify(weatherForecast) %>
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+<script src="/javascript/weather.js"></script>
+
+<script src="/javascript/image.js"></script>
+
+<script src="/javascript/showPageMap.js"></script> 	

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Parks Finder</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QFDE02J1H2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-QFDE02J1H2');
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/app.css">
+    <link rel="icon" href="../images/evergreen-tree_1f332.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body class="home-body">
+    <div class="video-filter"></div>
+    <video playsinline autoplay muted loop id="home-video" src="https://res.cloudinary.com/dsykt6xxf/video/upload/v1609683564/NationalParks/Landing/landing-compressed_dhcyiq.mp4" type="video/mp4"></video>
+
+    <main class="px-3 home-main">
+        <div class="container">
+            <div class="row">
+                <div class="text-center mt-0">
+                    <h1>National Parks Finder</h1>
+                    <p class="fw-light fs-5">Find National Parks in Canada or the US and plan your next trip outdoors</p>
+                    <a href="/parks?page=1" class="btn btn-lg btn-light landing-page-button">Explore parks</a>
+                </div>   
+                
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+
+<script type="text/javascript">
+    document.getElementById('home-video').playbackRate = 0.75;
+    document.getElementById('home-video').play()
+</script>

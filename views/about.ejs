@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate') %>
+<title>About</title>
+
+<div class="row about-container">
+	<div class="col-lg-6 about-image-container mt-5">
+		<figure>
+			<img class="about-image" src="https://res.cloudinary.com/dsykt6xxf/image/upload/v1610221882/about_m4qivu.jpg" alt="">
+			<figcaption class="about-image-caption text-muted">Me in Quebec, Canada</figcaption>
+		</figure>
+		
+	</div>
+	<div class="col-lg-6">
+		<h1>About</h1>
+		<hr>
+		<p>
+			Thanks for checking out National Parks Finder! 
+		</p>
+		<p>
+			Here, you'll find everything you need to know about all 111 National Parks in Canada and the United States, including photos, directions, helpful links, weather, and reviews. The goal of this website is to help you discover National Parks in your area, give you inspiration for where to go next, and simplify your trip planning much as possible.
+		</p>
+		<p>
+			While exploring National Parks to visit, I found that there wasn't a standalone website that clearly and concisely showed all National Parks and relevant information about each one. As a Computer Science student and a fan of the outdoors, I decided to build National Parks Finder to bring together both these interests and hopefully help users like you easily discover and plan trips to National Parks. 
+		</p>
+		<p>
+			Please reach out to me if you have any feedback or comments about this website, I'd love to hear from you!
+		</p>
+		<p class="about-name">
+			Marco <br>
+			<a href="mailto:marco@natparks.io" target="_blank" class="social-links"> marco@natparks.io</a> <br> <br>
+			<a href="/parks?page=1" class="about-back-link">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+				</svg>Back to parks
+			</a>
+		</p>
+	</div>
+</div>
+
+<script>
+	const navAbout = document.getElementById('nav-about')
+	navAbout.classList.add('navbar-link-active')
+</script>
+
