@@ -48,11 +48,9 @@ module.exports.paginate = async (req, res, next) => {
     page.currentPage = parseInt(req.query.page)
     const limit = 10
 
-    page.totalPages = Math.ceil((await Park.countDocuments().exec()) / limit)
-    page.totalPages = 0
+    page.totalPages = Math.ceil((await Park.countDocuments().exec()) / limit)    
     
-    
-     if (page.currentPage === 1) {
+    if (page.currentPage === 1) {
         page.display.push(page.currentPage)
         let pageToAdd = page.currentPage + 1
         if (pageToAdd <= page.totalPages) {
@@ -65,6 +63,7 @@ module.exports.paginate = async (req, res, next) => {
             count += 1
         }
         page.displayActiveIndex = 0
+
     } else if (page.currentPage === page.totalPages) {
         page.display.push(page.currentPage)
         let pageToAdd = page.currentPage - 1

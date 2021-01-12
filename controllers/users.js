@@ -16,7 +16,7 @@ module.exports.register = async (req, res, next) => {
         req.login(registeredUser, err => {
             if (err) return next(err)
             req.flash('success', 'Successfully registered!')
-            res.redirect('/parks')
+            res.redirect('/parks?page=1')
         })
     } catch(err) {
         req.flash('error', err.message)
@@ -34,7 +34,7 @@ module.exports.login = async (req, res) => {
     req.flash('success', 'Welcome back!')
 
     // This makes sure that when a user wants to go to a page but isn't logged in, after they log in they go to the same page they wanted to go to originally
-    const redirectUrl = req.session.returnTo || '/parks'
+    const redirectUrl = req.session.returnTo || '/parks?page=1'
     delete req.session.returnTo
     res.redirect(redirectUrl)
 }
@@ -43,5 +43,5 @@ module.exports.login = async (req, res) => {
 module.exports.logout = (req, res) => {
     req.logout()    
     req.flash('success', 'Successfully logged out!')
-    res.redirect('/parks')
+    res.redirect('/parks?page=1')
 }

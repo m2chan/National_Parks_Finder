@@ -261,7 +261,7 @@ module.exports.showPark = async (req, res) => {
 
     if (!park) {
         req.flash('error', 'Cannot find that park')
-        return res.redirect('/parks')
+        return res.redirect('/parks?page=1')
     }
 
     const weatherKey = process.env.WEATHER_KEY

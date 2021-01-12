@@ -246,12 +246,19 @@ body {
 	font-size: 2rem;
 	color: orange;
 	margin-left: 0px;
-	margin-right: 7px;
+	margin-right: 2px;
+	position: relative;
+	bottom: 1px;
 }
 
 .unfilled-star {
 	font-size: 1.5rem;
 	color: gray;
+}
+
+.popup-star {
+	position: relative;
+	bottom: -2px;
 }
 
 .review-info {
@@ -261,6 +268,10 @@ body {
 
 .review-date {
 	margin-left: 0.3rem;
+}
+
+.review-star {
+	margin-right: 2px;
 }
 
 .overall-rating {
@@ -289,6 +300,9 @@ body {
 
 .preview-star {
 	font-size: 1rem;
+	position: relative;
+	bottom: 2px;
+	margin-left: 1px;
 }
 
 .review-title {
@@ -374,8 +388,8 @@ body {
 	text-align: center;
 }
 
-.show-images-button, .show-reviews-button {
-	border: 1px solid #212529;
+.show-images-button, .show-reviews-button, .show-reviews-button:active {
+	border: 1px solid #212529 !important;
 }
 
 .show-images-button:hover, .show-reviews-button:hover, .landing-page-button:hover, .clear-button:hover {
@@ -481,7 +495,7 @@ body {
 	text-decoration: none;
 }
 
-#convert-units:hover, .social-links:hover, .about-back-link:hover, .footer-link:hover {
+#convert-units:hover, .social-links:hover, .about-back-link:hover, .footer-link:hover, .login-to-register:hover {
 	color: #212529;
 	cursor: pointer;
 }
@@ -627,6 +641,16 @@ body {
 	transition: color 0.3s;
 }
 
+.login-to-register-container {
+	text-align: center;
+}
+
+.login-to-register {
+	text-decoration: none;
+	color: gray;
+	transition: color 0.3s;
+}
+
 .register-card {
 	margin-top: 20%;
 	margin-left: 10%;
@@ -709,5 +733,11 @@ body {
 
 .navbar-link-active {
 	font-weight: bold;
+}
+
+.navbar-logo {
+	width: 30px;
+	height: auto;
+	padding-bottom: 7px;
 }
 

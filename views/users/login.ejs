@@ -35,10 +35,7 @@
             <div class="card register-card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <form action="/parks?page1" method="get">
-                            <button class="back-button"><i class="fa fa-angle-left back-arrow"></i>Back to
-                                parks</button>
-                        </form>
+                        <button class="back-button" onclick="history.back(-1)"><i class="fa fa-angle-left back-arrow"></i>Back</button>
                     </div>
                     <h1 class="card-title mb-3">Log in</h1>
                     <p class="text-muted">
@@ -60,9 +57,14 @@
 								Please try again!
 							</div>
 						</div>
-						
 						<button class="btn btn-success w-100">Log me in</button>
-					</form>
+                    </form>
+                    <div class="text-muted login-to-register-container">
+                        <a href="/register" class="login-to-register">Create an account<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"/>
+                          </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
