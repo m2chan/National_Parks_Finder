@@ -4,7 +4,7 @@ Check out the live website here: [https://www.natparks.io/](https://www.natparks
 
 ## About the Project
 
-As I was trying to browse National Parks to visit in the future, I found that there wasn't a standalone website that clearly and concisely showed all National Parks and relevant information about each one. That was what led me to build National Parks Finder, website that lets users easily search and filter for National Parks in Canada and the US, and provides helpful information and links about each park.
+As I was trying to browse National Parks to visit in the future, I found that there wasn't a standalone website that clearly and concisely showed all National Parks and relevant information about each one. That was what led me to build National Parks Finder, a website that lets users easily search and filter for National Parks in Canada and the US, and provides helpful information and links for each park.
 
 Website features:
 * Description, reviews, photos, available activities, map/directions, weather, contact information, and visitor center links for all 111 National Parks in Canada and the US. Note: Available activities obtained Parks Canada/US National Park Service, reviews and ratings obtained from Google Maps
